@@ -1,0 +1,553 @@
+<!DOCTYPE HTML Version 4.01>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta name="IBM:HPB-Input-Mode" content="mode/flm; pagewidth=750; pageheight=900">
+<meta name="GENERATOR" content="IBM WebSphere Studio Homepage Builder Version 9.0.0.0 for Windows">
+<title>Recycle スクロール</title>
+<SCRIPT language="JavaScript">
+
+<!--HPB_SCRIPT_SDS_60
+//
+//  Licensed Materials - Property of IBM
+//  5724I83
+//  (C) Copyright IBM Corp. 1995, 2004 All Rights Reserved.
+//
+var appVer = parseInt(navigator.appVersion);
+var isNC=false,isN6=false,isIE=false;
+if (document.all && appVer >= 4) isIE=true; else
+  if (document.getElementById && appVer > 4) isN6=true; else
+    if (document.layers && appVer >= 4) isNC=true;
+var slideobj;
+slideobj = new Array;
+var chkobj;
+chkobj = true;
+//
+// HpbSlideInit
+//
+function HpbSlideInit() {
+  if (arguments.length < 4) return;
+  var n;
+  n = arguments[3];
+  slideobj[n] = new Array;
+  slideobj[n].auto = arguments[0];
+  slideobj[n].interval = arguments[1];
+  var w_str;
+  var base;
+  base = new Array;
+  if (isNC) {
+    w_str = "document." + arguments[2];
+    base = eval(w_str);
+    if (base) {
+      base.pos_x = base.left;
+      for (var div=0; div < arguments.length-3; div++) {
+        w_str = "base.document." + arguments[div+3];
+        slideobj[n][div] = eval(w_str);
+        if (slideobj[n][div]) {
+          slideobj[n][div].innerH = window.innerHeight;
+          slideobj[n][div].innerW = window.innerwidth;
+          slideobj[n][div].pos_x = slideobj[n][div].left;
+          slideobj[n][div].pos_y = slideobj[n][div].top;
+          slideobj[n][div].pos_w = slideobj[n][div].clip.width;
+          slideobj[n][div].pos_h = slideobj[n][div].clip.height;
+          slideobj[n][div].cnt = 0;
+        } else chkobj = false;
+      }
+    } else chkobj = false;
+  }
+  if (isN6) {
+    base = document.getElementById(arguments[2]);
+    if (base) {
+      base.pos_x = parseInt(base.style.left);
+      for (var div=0; div < arguments.length-3; div++) {
+        slideobj[n][div] = document.getElementById(arguments[div+3]);
+        if (slideobj[n][div]) {
+          slideobj[n][div].innerH = window.innerHeight;
+          slideobj[n][div].innerW = window.innerwidth;
+          slideobj[n][div].pos_x = parseInt(slideobj[n][div].style.left);
+          slideobj[n][div].pos_y = parseInt(slideobj[n][div].style.top);
+          slideobj[n][div].pos_w = parseInt(slideobj[n][div].style.width);
+          slideobj[n][div].pos_h = parseInt(slideobj[n][div].style.height);
+          slideobj[n][div].cnt = 0;
+        } else chkobj = false;
+      }
+    } else chkobj = false;
+  }
+  if (isIE) {
+    w_str = "document.all.item(\"" + arguments[2] + "\")";
+    if (eval(w_str)) {
+      w_str = "document.all.item(\"" + arguments[2] + "\").style";
+      base = eval(w_str);
+      if (base) base.pos_x = base.pixelLeft; else chkobj = false;
+    } else chkobj = false;
+    for (var div=0; div < arguments.length-3; div++) {
+      w_str = "document.all.item(\"" + arguments[div+3] + "\")";
+      if (eval(w_str)) {
+        w_str = "document.all.item(\"" + arguments[div+3] + "\").style";
+        slideobj[n][div] = eval(w_str);
+        if (slideobj[n][div]) {
+          slideobj[n][div].innerH = document.body.clientHeight;
+          slideobj[n][div].innerW = document.body.clientwidth;
+          slideobj[n][div].pos_x = slideobj[n][div].pixelLeft;
+          slideobj[n][div].pos_y = slideobj[n][div].pixelTop;
+          slideobj[n][div].pos_w = slideobj[n][div].pixelwidth;
+          slideobj[n][div].pos_h = slideobj[n][div].pixelHeight;
+          slideobj[n][div].cnt = 0;
+        } else chkobj = false;
+  } } }
+  if (!chkobj) return;
+  for (var div = 1; div < slideobj[n].length; div++) {
+    slideobj[n][div].pos_mx = new Array;
+    slideobj[n][div].pos_my = new Array;
+    slideobj[n][div].pos_mx[0] = 0 - ( base.pos_x + slideobj[n][div].pos_w );
+    var w_sub;
+    w_sub = 320-(base.pos_x+slideobj[n][div].pos_x);
+    if (w_sub > 0) slideobj[n][div].pos_mx[0]-=w_sub;
+    slideobj[n][div].pos_my[0] = slideobj[n][0].pos_y + ( slideobj[n][0].pos_h / 2 ) - ( slideobj[n][div].pos_h / 2 );
+    for (var p = 1; ; p++) {
+      slideobj[n][div].pos_mx[p] = slideobj[n][div].pos_mx[p - 1] + 20;
+      slideobj[n][div].pos_my[p] = slideobj[n][div].pos_my[0];
+      if ( slideobj[n][div].pos_mx[p] >= slideobj[n][0].pos_x + ( slideobj[n][0].pos_w / 2 ) - ( slideobj[n][div].pos_w / 2 ) ) {
+        slideobj[n][div].pos_mx[p] = slideobj[n][0].pos_x + ( slideobj[n][0].pos_w / 2 ) - ( slideobj[n][div].pos_w / 2 );
+        break;
+      }
+    }
+    slideobj[n][div].pos_ox = new Array;
+    slideobj[n][div].pos_oy = new Array;
+    slideobj[n][div].pos_ox[0] = slideobj[n][div].pos_mx[slideobj[n][div].pos_mx.length - 1];
+    slideobj[n][div].pos_oy[0] = slideobj[n][div].pos_my[0];
+    for (var p = 1; ; p++) {
+      slideobj[n][div].pos_ox[p] = slideobj[n][div].pos_ox[p - 1] + 20;
+      slideobj[n][div].pos_oy[p] = slideobj[n][div].pos_oy[0];
+      if ( slideobj[n][div].pos_ox[p] >= slideobj[n][div].innerW ) {
+        break;
+      }
+    }
+  }
+  slideobj[n].idiv = 1;
+  slideobj[n].odiv = slideobj[n].length - 1;
+  slideobj[n].lr = 1;
+  slideobj[n].itm = false;
+  slideobj[n].otm = false;
+  HpbSlideShowObj(slideobj[n][slideobj[n].idiv]);
+}
+//
+// HpbSlideNext
+//
+function HpbSlideNext( n ) {
+  if ((isNC||isN6||isIE) && chkobj) {
+    if ( slideobj[n].auto == true ) {
+      if ( slideobj[n].itm == false && slideobj[n].otm == false ) {
+        var p;
+        if ( slideobj[n].lr > 0 ) {
+          slideobj[n].odiv = slideobj[n].idiv;
+          p = 0;
+        } else {
+          slideobj[n].idiv = slideobj[n].odiv;
+          slideobj[n].odiv += 1;
+          if ( slideobj[n].odiv >= slideobj[n].length ) slideobj[n].odiv = 1;
+          p = slideobj[n][slideobj[n].odiv].pos_ox.length - 1;
+        }
+        slideobj[n].otm = true;
+        setTimeout( "HpbSlideTimerOut('" + n + "'," + p + ")", slideobj[n].interval );
+        if ( slideobj[n].lr > 0 ) {
+          slideobj[n].idiv += 1;
+          if ( slideobj[n].idiv >= slideobj[n].length ) slideobj[n].idiv = 1;
+          p = 0;
+        } else {
+          p = slideobj[n][slideobj[n].idiv].pos_mx.length - 1;
+        }
+        slideobj[n].itm = true;
+        setTimeout( "HpbSlideTimerIn('" + n + "'," + p + ")", slideobj[n].interval );
+      }
+    }
+  }
+}
+//
+// HpbSlideTimerIn
+//
+function HpbSlideTimerIn( n, p ) {
+  if ((isNC||isN6||isIE) && chkobj) {
+    var div;
+    div = slideobj[n].idiv;
+    if (slideobj[n][div]) {
+      var pl;
+      if ( slideobj[n].lr > 0 && p == 0 ) HpbSlideShowObj(slideobj[n][div]);
+      HpbSlideMoveobj(slideobj[n][div],slideobj[n][div].pos_mx[p],slideobj[n][div].pos_my[p]);
+      pl = slideobj[n][div].pos_mx.length;
+      p += slideobj[n].lr;
+      if ( ( p < pl && slideobj[n].lr > 0 )
+        || ( p >= 0 && slideobj[n].lr < 0 ) ) {
+        setTimeout( "HpbSlideTimerIn('" + n + "'," + p + ")", 100 );
+      } else {
+        slideobj[n].itm = false;
+        HpbSlideNext( n );
+        if ( slideobj[n].lr < 0 ) HpbSlideHideObj(slideobj[n][div]);
+      }
+} } }
+//
+// HpbSlideTimerOut
+//
+function HpbSlideTimerOut( n, p ) {
+  if ((isNC||isN6||isIE) && chkobj) {
+    var div;
+    div = slideobj[n].odiv;
+    if (slideobj[n][div]) {
+      var pl;
+      if ( slideobj[n].lr < 0 && p == ( slideobj[n][div].pos_ox.length - 1 ) ) HpbSlideShowObj(slideobj[n][div]);
+      HpbSlideMoveobj(slideobj[n][div],slideobj[n][div].pos_ox[p],slideobj[n][div].pos_oy[p]);
+      pl = slideobj[n][div].pos_ox.length;
+      p += slideobj[n].lr;
+      if ( ( p < pl && slideobj[n].lr > 0 )
+        || ( p >= 0 && slideobj[n].lr < 0 ) ) {
+        setTimeout( "HpbSlideTimerOut('" + n + "'," + p + ")", 100 );
+      } else {
+        slideobj[n].otm = false;
+        HpbSlideNext( n );
+        if ( slideobj[n].lr > 0 ) HpbSlideHideObj(slideobj[n][div]);
+      }
+} } }
+//
+// HpbSlideStart
+//
+function HpbSlideStart( n, pn, rb, sq, mv ) {
+  if ((isNC||isN6||isIE) && chkobj) {
+    if ( slideobj[n].itm == false && slideobj[n].otm == false ) {
+      var p;
+      if ( slideobj[n].lr == pn ) {
+        if ( pn > 0 ) {
+          slideobj[n].odiv = slideobj[n].idiv;
+          if ( sq > 0 ) {
+            slideobj[n].idiv += 1;
+            if ( slideobj[n].idiv >= slideobj[n].length ) slideobj[n].idiv = 1;
+          } else {
+            slideobj[n].idiv -= 1;
+            if ( slideobj[n].idiv < 1 ) slideobj[n].idiv = slideobj[n].length - 1;
+          }
+        } else {
+          slideobj[n].idiv = slideobj[n].odiv;
+          if ( sq > 0 ) {
+            slideobj[n].odiv += 1;
+            if ( slideobj[n].odiv >= slideobj[n].length ) slideobj[n].odiv = 1;
+          } else {
+            slideobj[n].odiv -= 1;
+            if ( slideobj[n].odiv < 1 ) slideobj[n].odiv = slideobj[n].length - 1;
+          }
+        }
+      } else {
+        slideobj[n].lr = pn;
+        if ( rb == false ) {
+          if ( pn > 0 ) {
+            if ( sq > 0 ) {
+              slideobj[n].idiv = slideobj[n].odiv + 1;
+              if ( slideobj[n].idiv >= slideobj[n].length ) slideobj[n].idiv = 1;
+            } else {
+              slideobj[n].idiv -= 1;
+              if ( slideobj[n].idiv < 1 ) slideobj[n].idiv = slideobj[n].length - 1;
+            }
+          } else {
+            if ( sq > 0 ) {
+              slideobj[n].odiv = slideobj[n].idiv + 1;
+              if ( slideobj[n].odiv >= slideobj[n].length ) slideobj[n].odiv = 1;
+            }
+          }
+        }
+      }
+      if ( mv == true ) {
+        if ( pn > 0 ) {
+          p = 0;
+        } else {
+          p = slideobj[n][slideobj[n].odiv].pos_ox.length - 1;
+        }
+        slideobj[n].otm = true;
+        setTimeout( "HpbSlideTimerOut('" + n + "'," + p + ")", 100 );
+      } else {
+        if ( pn > 0 ) {
+          HpbSlideShowObj(slideobj[n][slideobj[n].idiv]);
+        } else {
+          HpbSlideShowObj(slideobj[n][slideobj[n].odiv]);
+        }
+      }
+      if ( mv == true ) {
+        if ( pn > 0 ) {
+          p = 0;
+        } else {
+          p = slideobj[n][slideobj[n].idiv].pos_mx.length - 1;
+        }
+        slideobj[n].itm = true;
+        setTimeout( "HpbSlideTimerIn('" + n + "'," + p + ")", 100 );
+      } else {
+        if ( pn > 0 ) {
+          HpbSlideHideObj(slideobj[n][slideobj[n].odiv]);
+        } else {
+          HpbSlideHideObj(slideobj[n][slideobj[n].idiv]);
+        }
+      }
+    }
+  }
+}
+//
+// HpbSlideShowObj
+//
+function HpbSlideShowObj(obj) {
+  if (obj) {
+    if (isNC) obj.visibility = "show";
+    if (isN6) obj.style.visibility = "visible";
+    if (isIE) obj.visibility = "visible";
+    lastobj = obj;
+} }
+//
+// HpbSlideHideObj
+//
+function HpbSlideHideObj(obj) {
+  if (obj) {
+    if (isNC) obj.visibility = "hide";
+    if (isN6) obj.style.visibility = "hidden";
+    if (isIE) obj.visibility = "hidden";
+} }
+//
+// HpbSlideMoveobj
+//
+function HpbSlideMoveobj(obj,x,y) {
+  if (obj) {
+    if (isNC) {obj.left=x;obj.top=y;}
+    if (isN6) {obj.style.left=x+"px";obj.style.top=y+"px";}
+    if (isIE) {obj.left=x;obj.top=y;}
+} }
+//
+// HpbSlideAutoStart
+//
+function HpbSlideAutoStart( n, pn, mv ) {
+  if ((isNC||isN6||isIE) && chkobj) {
+    if ( slideobj[n].itm == false && slideobj[n].otm == false &&  slideobj[n].auto == false ) {
+      if ( slideobj[n].lr != pn ) {
+        if ( pn > 0 ) {
+        } else {
+          slideobj[n].odiv = slideobj[n].idiv;
+          slideobj[n].idiv += 1;
+          if ( slideobj[n].idiv >= slideobj[n].length ) slideobj[n].idiv = 1;
+        }
+      }
+      slideobj[n].auto = true;
+      slideobj[n].lr = pn;
+      if ( mv == true ) {
+        HpbSlideNext( n );
+      } else {
+        HpbSlideSwap( n, pn );
+      }
+    }
+  }
+}
+//
+// HpbSlideAutoStop
+//
+function HpbSlideAutoStop( n ) {
+  if ((isNC||isN6||isIE) && chkobj) {
+    slideobj[n].auto = false;
+  }
+}
+//
+// HpbSlideSwap
+//
+function HpbSlideSwap( n, pn ) {
+  if ((isNC||isN6||isIE) && chkobj) {
+    if ( slideobj[n].auto == true ) {
+      HpbSlideStart(n,pn,false,pn,false);
+      setTimeout( "HpbSlideSwap('" + n + "'," + pn + ")", slideobj[n].interval );
+    }
+  }
+}
+//-->
+
+</SCRIPT></head>
+<body onload="HpbSlideInit(false, 1000, '_HPB_WPG_SLIDE6', 'LAYER_HPB_WPG_SLIDE6_20', 'LAYER_HPB_WPG_SLIDE6_0', 'LAYER_HPB_WPG_SLIDE6_1', 'LAYER_HPB_WPG_SLIDE6_2', 'LAYER_HPB_WPG_SLIDE6_3', 'LAYER_HPB_WPG_SLIDE6_4', 'LAYER_HPB_WPG_SLIDE6_5', 'LAYER_HPB_WPG_SLIDE6_6', 'LAYER_HPB_WPG_SLIDE6_7', 'LAYER_HPB_WPG_SLIDE6_8', 'LAYER_HPB_WPG_SLIDE6_9', 'LAYER_HPB_WPG_SLIDE6_10', 'LAYER_HPB_WPG_SLIDE6_11', 'LAYER_HPB_WPG_SLIDE6_12', 'LAYER_HPB_WPG_SLIDE6_13', 'LAYER_HPB_WPG_SLIDE6_14', 'LAYER_HPB_WPG_SLIDE6_15', 'LAYER_HPB_WPG_SLIDE6_16', 'LAYER_HPB_WPG_SLIDE6_17', 'LAYER_HPB_WPG_SLIDE6_18', 'LAYER_HPB_WPG_SLIDE6_19', 'LAYER_HPB_WPG_SLIDE6_20');">
+<DIV style="width : 340px;top : 89px;left : 228px;
+  position : absolute;
+  z-index : 1;
+  height : 37px;
+" id="Layer3">
+<P><FONT size="+1"><B>Start</B></FONT><B>ボタン</B>を押すとスライドショーが始まります！</P>
+</DIV>
+<DIV style="top : -14px;left : 244px;
+  position : absolute;
+  z-index : 2;
+" id="Layer1"><img src="logo6.gif" width="254" height="91" border="0" alt="Recycle "></DIV>
+<DIV style="width : 90px;height : 59px;top : 26px;left : 130px;
+  position : absolute;
+  z-index : 3;
+" id="Layer9">
+<DIV style="top : 39px;left : 0px;
+  position : absolute;
+  z-index : 2;
+  width : 90px;
+  height : 20px;
+" id="Layer8">
+<P><FONT color="#0000ff"><a href="index.htm"><FONT face="HGP創英角ﾎﾟｯﾌﾟ体" color="#ff0080">TOPへ戻る</FONT></A></FONT></P>
+</DIV>
+<DIV style="top : 0px;left : 23px;
+  position : absolute;
+  z-index : 1;
+" id="Layer7"><img src="belairfront.jpg" width="42" height="57" border="0"></DIV>
+</DIV>
+<DIV style="width : 129px;height : 90px;top : 32px;left : 604px;
+  position : absolute;
+  z-index : 4;
+" id="Layer37">
+<DIV id="Layer2" style="position: absolute; left : 65px; top : 62px; width : 62px; height : 21px; z-index : 3;"><a href="mailto:silver@bel-air1998.com"><FONT color="#ff0080" size="+1" face="HGP創英角ﾎﾟｯﾌﾟ体">Ｍａｉｌ</FONT></A></DIV>
+<DIV style="width : 65px;top : 9px;left : 0px;
+  position : absolute;
+  z-index : 2;
+  height : 60px;
+" id="Layer12">
+<P><FONT color="#000000" size="-1">どんな事でもお気軽に」お問い合わせ下さい</FONT></P>
+</DIV>
+<DIV style="top : 0px;left : 51px;
+  position : absolute;
+  z-index : 1;
+  width : 78px;
+  height : 90px;
+" id="Layer4"><img src="a_btn077.gif" width="78" height="90" border="0"></DIV>
+</DIV>
+<DIV style="width : 714px;height : 571px;top : 170px;left : 55px;
+  position : absolute;
+  z-index : 5;
+" id="_HPB_WPG_SLIDE6">
+<DIV style="width : 25px;height : 25px;top : 546px;left : 362px;
+  position : absolute;
+  z-index : 22;
+" id="LAYER_HPB_WPG_SLIDE6_21"><a href="javascript:HpbSlideAutoStart('LAYER_HPB_WPG_SLIDE6_20', 1, true);"><img src="a00911.gif" width="25" height="25" border="0"></A></DIV>
+<DIV style="width : 25px;height : 25px;top : 546px;left : 327px;
+  position : absolute;
+  z-index : 23;
+" id="LAYER_HPB_WPG_SLIDE6_22"><a href="javascript:HpbSlideAutoStop('LAYER_HPB_WPG_SLIDE6_20');"><img src="a00921.gif" width="25" height="25" border="0"></A></DIV>
+<DIV style="width : 640px;height : 480px;top : 28px;left : 37px;
+  position : absolute;
+  z-index : 1;
+  visibility : visible;
+" id="LAYER_HPB_WPG_SLIDE6_0"><img src="chanel.jpg" width="640" height="480" border="0"></DIV>
+<DIV style="width : 240px;height : 320px;top : 108px;left : 237px;
+  position : absolute;
+  z-index : 2;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_1"><img src="chaneltag.jpg" width="240" height="320" border="0"></DIV>
+<DIV style="width : 640px;height : 480px;top : 28px;left : 37px;
+  position : absolute;
+  z-index : 3;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_2"><img src="P8200018.JPG" width="640" height="480" border="0"></DIV>
+<DIV style="width : 640px;height : 480px;top : 28px;left : 37px;
+  position : absolute;
+  z-index : 4;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_3"><img src="P8200019.JPG" width="640" height="480" border="0"></DIV>
+<DIV style="width : 640px;height : 480px;top : 28px;left : 37px;
+  position : absolute;
+  z-index : 5;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_4"><img src="P8200025.JPG" width="640" height="480" border="0"></DIV>
+<DIV style="width : 714px;height : 536px;top : 0px;left : 0px;
+  position : absolute;
+  z-index : 6;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_5"><img src="seline055.jpg" width="714" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 7;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_6"><img src="sero-nukanagu 056_7.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 128px;height : 96px;top : 220px;left : 293px;
+  position : absolute;
+  z-index : 8;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_7"><img src="seri-nu 058_6_thumb_1.jpg" width="128" height="96" border="0"></DIV>
+<DIV style="width : 714px;height : 536px;top : 0px;left : 0px;
+  position : absolute;
+  z-index : 9;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_8"><img src="VFSH0353.jpg" width="714" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 10;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_9"><img src="060vittonbag.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 714px;height : 536px;top : 0px;left : 0px;
+  position : absolute;
+  z-index : 11;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_10"><img src="061vitton_2.jpg" width="714" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 12;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_11"><img src="053kyarao_7.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 13;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_12"><img src="caraokuruzu54.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 714px;height : 536px;top : 0px;left : 0px;
+  position : absolute;
+  z-index : 14;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_13"><img src="Foxmae_2.jpg" width="714" height="536" border="0"></DIV>
+<DIV style="width : 714px;height : 536px;top : 0px;left : 0px;
+  position : absolute;
+  z-index : 15;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_14"><img src="Fozushiro_2.jpg" width="714" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 16;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_15"><img src="Mink.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 17;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_16"><img src="mink005.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 18;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_17"><img src="mink020.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 19;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_18"><img src="scapa056_1.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 20;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_19"><img src="scapa2057.jpg" width="402" height="536" border="0"></DIV>
+<DIV style="width : 402px;height : 536px;top : 0px;left : 156px;
+  position : absolute;
+  z-index : 21;
+  visibility : hidden;
+" id="LAYER_HPB_WPG_SLIDE6_20"><img src="scapadai0581.jpg" width="402" height="536" border="0"></DIV>
+</DIV>
+<DIV style="width : 638px;top : 783px;left : 78px;
+  position : absolute;
+  z-index : 6;
+  height : 68px;
+" id="Layer5">
+<P><FONT color="#00cccc"><B>オーナーの知り合いから依頼された新品同様の品質･状態共に最良のかなり“お買い得!!”な高級Recycle品のみを集めてBEL　AIR のﾎｰﾑﾍﾟｰｼﾞにアクセスされた方だけにご紹介しているコーナーです。お値段もとってもリーズナブル(#^.^#)　ご覧になられた方はシアワセですよ～～（●＾o＾●）</B></FONT></P>
+</DIV>
+<DIV style="width : 122px;height : 74px;top : 114px;left : 318px;
+  position : absolute;
+  z-index : 8;
+" id="Layer13">
+<DIV style="width : 119px;top : 0px;left : 3px;
+  position : absolute;
+  z-index : 2;
+" id="Layer11">
+<P><FONT color="#ffffff"><B>Recycle詳細</B></FONT></P>
+</DIV>
+<DIV style="top : 1px;left : 0px;
+  position : absolute;
+  z-index : 1;
+" id="Layer10"><a href="sub10.htm"><img src="chanel_thumb1.jpg" width="98" height="73" border="0"></A></DIV>
+</DIV>
+</body>
+</html>

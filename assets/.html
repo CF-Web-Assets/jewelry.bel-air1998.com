@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<style>
+			HTML, BODY {
+				margin: 0;
+				color: #FFFFFF;
+				background-color: #ea4f46;
+				font-family: sans-serif;
+				font-weight: 500;
+			}
+			A, A:hover, A:visited {
+				color: #FFFFFF;
+			}
+			DIV {
+				padding-left: 1em;
+				padding-right: 1em;
+			}
+			SPAN {
+				display: block;
+				position: absolute;
+				top: 20vh;
+			}
+			.Link {
+				text-align: right;
+			}
+			#Detail {
+				display: none;
+			}
+		</style>
+		<script>
+			function OpenDetail(){
+				document.getElementById('DetailLink').style.display = 'none';
+				document.getElementById('Detail').style.display = 'block';
+			}
+		</script>
+	</head>
+	</body>
+<span class="Main">
+<div>
+	<h1>詐欺Webサイトの警告</h1>
+	このWebサイトは、あなたをだまして、危険なソフトウェアのインストールや個人情報（パスワード、電話番号、クレジットカード番号など）の入力といった危険な行為をさせる可能性があります。<br>
+	<br>
+</div>
+<div class="Link">
+	<a href="javascript:void(OpenDetail());" onlick="OpenDetail();" id="DetailLink">詳細を表示</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:history.back();" onlick="histroy.back();">戻る</a><br>
+</div>
+<div id="Detail">
+	<br>
+	<hr>
+	<br>
+	・詐欺Webサイトは、あなたが信頼している正規のWebサイトのふりをしてあなたをだまそうとします。<br>
+	・悪質なソフトウェアが検出されたWebサイトの警告です。<br>
+	・有害な情報を含むと報告されたWebサイトの警告です。<br>
+<div>
+</span>
+</body>
+</html>
